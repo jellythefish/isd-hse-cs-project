@@ -12,7 +12,7 @@ Txt-Convertify - веб-сервис, выполняющий конвертац�
 
    Если же у вас Windows, то скачайте zip-архив с проектом: 
 
-   [Txt-Convertify](https://github.com/jellythefish/isd-hse-cs-project/archive/master.zip)
+   Ссылка: [Txt-Convertify](https://github.com/jellythefish/isd-hse-cs-project/archive/master.zip)
 
    
 
