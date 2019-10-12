@@ -23,8 +23,10 @@ def run(port = 7842):
         print(f"Local server was started at http://localhost:{port}/")
         server_address = ('', port)
         my_server = HTTPServer(server_address, RequestHandler)
+        os.system(f"start http://localhost:{port}/")
         my_server.serve_forever()
-    
+        
+
     except KeyboardInterrupt:
 	    print ('^C received, shutting down the web server')
 	    my_server.socket.close()

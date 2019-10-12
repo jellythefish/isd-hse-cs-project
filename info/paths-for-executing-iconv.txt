@@ -1,0 +1,2 @@
+iconv\bin\iconv.exe - для запуска утилиты iconv
+tests\test.txt - тестовый файл в виде txt
