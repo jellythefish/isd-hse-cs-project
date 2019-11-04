@@ -1,40 +1,30 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
-import sys
-import mimetypes
+from flask import Flask, request, send_file
+from scripts.detect_encoding import detect_encoding
+from scripts.converter import encode_text
 
-root_directory = os.path.dirname(os.path.abspath(__file__)) # абсолютный путь к корню проекта
+app = Flask(__name__)
+root_directory = os.path.dirname(os.path.abspath(__file__))
 
-class RequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/':
-            filepath = root_directory + '/index.html'
-        else:
-            filepath= root_directory + self.path
-        self.send_response(200)
-        mimetype = mimetypes.guess_type(filepath)
-        self.send_header('Content-type', mimetype[0])
-        self.end_headers()
-        requested_file = open(filepath, 'rb').read()
-        self.wfile.write(requested_file)
+@app.route("/")
+def hello():
+    return "Hello World!"
 
-def run(port = 7842):
-    try:
-        print(f"Local server was started at http://localhost:{port}/")
-        server_address = ('', port)
-        my_server = HTTPServer(server_address, RequestHandler)
-        os.system(f"start http://localhost:{port}/")
-        my_server.serve_forever()
-        
+@app.route('/convert/<output_type>', methods=['GET', 'POST'])
+def upload_file(output_type=None):
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save('./target-files/input.txt')
 
-    except KeyboardInterrupt:
-	    print ('^C received, shutting down the web server')
-	    my_server.socket.close()
-	
+    convert(output_type)
+    return send_file(root_directory + f"\\target-files\\{output_type}-converted.txt")
+
+
+def convert(target_encoding):
+    file_name = "input.txt"
+    file_path = root_directory + f'\\target-files\{file_name}'
+    initial_encoding = detect_encoding(file_path)
+    encode_text(file_path, initial_encoding, target_encoding, file_name)
 
 if __name__ == "__main__":
-    if (len(sys.argv) == 1):
-        run()
-    else:
-        run(int(sys.argv[1]))
-        
+    app.run()
