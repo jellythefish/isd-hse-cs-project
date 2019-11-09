@@ -14,15 +14,15 @@ def hello():
 def upload_file(output_type=None):
     if request.method == 'POST':
         f = request.files['file']
-        f.save('./target-files/input.txt')
+        f.save(f"{root_directory}\\target-files\\input.txt")
 
     convert(output_type)
-    return send_file(root_directory + f"\\target-files\\{output_type}-converted.txt")
+    return send_file(f"{root_directory}/target-files/{output_type}-converted.txt")
 
 
 def convert(target_encoding):
     file_name = "input.txt"
-    file_path = root_directory + f'\\target-files\{file_name}'
+    file_path =  f"{root_directory}\\target-files\{file_name}"
     initial_encoding = detect_encoding(file_path)
     encode_text(file_path, initial_encoding, target_encoding, file_name)
 
