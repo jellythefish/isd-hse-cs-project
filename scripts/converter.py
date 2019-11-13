@@ -1,15 +1,23 @@
-import chardet
-import os
-import sys
 import subprocess
-from scripts.detect_encoding import detect_encoding
+import platform
+from pathlib import Path
 
-root_directory = os.path.dirname(os.path.abspath(__file__))[:-7]
+os = platform.system()
 
-def encode_text(file_path, initial_encoding, final_encoding, txt_input_name):
-    change_dir = f"cd \"{root_directory}iconv\\bin\\\" && iconv.exe"
-    encodings_string = f" -c -f {initial_encoding} -t {final_encoding} \"{file_path}\""
-    output_string = f" > \"{root_directory}target-files\{final_encoding}-converted.txt\""
-    cmd = change_dir + encodings_string + output_string
+def convert_encoding(root_path, initial_encoding, final_encoding):
+    if os == "Windows":
+        iconv = str(Path(f"{root_path}/iconv/bin/iconv.exe"))
+    
+    elif os == "Darwin" or os == "Linux": 
+        iconv = "iconv"
 
-    subprocess.Popen(cmd, shell=True)
+    encodings_string = f" -f {initial_encoding} -t {final_encoding} "
+    input_file_path = str(Path(f"{root_path}/target-files/input.txt"))
+    output_sym = " > "
+    output_file_path = str(Path(f"{root_path}/target-files/{final_encoding}-converted.txt"))
+    cmd = iconv + encodings_string + input_file_path + output_sym + output_file_path
+    
+    try:
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+    except subprocess.CalledProcessError:
+        raise

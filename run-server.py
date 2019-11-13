@@ -1,10 +1,13 @@
-import os
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, Response
+from pathlib import Path
 from scripts.detect_encoding import detect_encoding
-from scripts.converter import encode_text
+from scripts.converter import convert_encoding
+import subprocess
+
+root_path = Path.cwd() # cwd is for current working directory
+# All paths in this project are os adabtable (Windows/Unix path styles)
 
 app = Flask(__name__)
-root_directory = os.path.dirname(os.path.abspath(__file__))
 
 @app.route("/")
 def hello():
@@ -14,17 +17,18 @@ def hello():
 def upload_file(output_type=None):
     if request.method == 'POST':
         f = request.files['file']
-        f.save(f"{root_directory}\\target-files\\input.txt")
+        input_file_path = str(Path("target-files/input.txt"))
+        f.save(input_file_path)
 
-    convert(output_type)
-    return send_file(f"{root_directory}/target-files/{output_type}-converted.txt")
+    initial_file_encoding = detect_encoding(input_file_path) 
 
+    try:
+        convert_encoding(root_path, initial_file_encoding, output_type)
+    except Exception as e:
+        return Response("HTTP_400_BAD_REQUEST: " + str(e.output), 400)
 
-def convert(target_encoding):
-    file_name = "input.txt"
-    file_path =  f"{root_directory}\\target-files\{file_name}"
-    initial_encoding = detect_encoding(file_path)
-    encode_text(file_path, initial_encoding, target_encoding, file_name)
+    output_file_path = str(Path(f"target-files/{output_type}-converted.txt"))
+    return send_file(output_file_path)
 
 if __name__ == "__main__":
     app.run()
