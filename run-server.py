@@ -10,7 +10,7 @@ root_path = Path.cwd() # cwd is for current working directory
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
+def index():
     return render_template('index.html', available_formats=get_available_formats(root_path))
 
 @app.route('/convert/<output_type>', methods=['GET', 'POST'])
