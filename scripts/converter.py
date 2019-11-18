@@ -4,13 +4,24 @@ from pathlib import Path
 
 os = platform.system()
 
-def convert_encoding(root_path, initial_encoding, final_encoding):
-    if os == "Windows":
-        iconv = str(Path(f"{root_path}/iconv/bin/iconv.exe"))
-    
-    elif os == "Darwin" or os == "Linux": 
-        iconv = "iconv"
 
+def get_iconv_name(root_path):
+    if os == "Windows":
+        return str(Path(f"{root_path}/iconv/bin/iconv.exe"))
+    elif os == "Darwin" or os == "Linux":
+        return "iconv"
+
+
+def get_available_formats(root_path):
+    if os == "Windows":
+        return subprocess.check_output([get_iconv_name(root_path), "-l"], text=True).split()
+    else:
+        return subprocess.check_output([get_iconv_name(root_path), "--list"], text=True).split(
+            "//\n")
+
+
+def convert_encoding(root_path, initial_encoding, final_encoding):
+    iconv = get_iconv_name(root_path)
     encodings_string = f" -f {initial_encoding} -t {final_encoding} "
     input_file_path = str(Path(f"{root_path}/target-files/input.txt"))
     output_sym = " > "

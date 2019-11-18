@@ -1,0 +1,8 @@
+html, body, .main-container > div {
+    display: flex;
+    flex: 1;
+}
+
+html {
+    height: 100%
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/styles.css">
+
+    <title>HSE Elective</title>
+</head>
+<body>
+<div class="container-fluid h-100">
+    <div class="row align-items-center justify-content-center h-75">
+        <div class="center-block col-lg-4" style="float: none" id="main">
+            <form class="md-form" id="convert-form">
+                <h1 class="text-center">HSE Elective converter</h1>
+                <p>Приложение производит конвертацию файла из исходной кодировки в одну из
+                    доступных</p>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-warning" type="button" aria-haspopup="true"
+                                aria-expanded="false" id="btn-file">Upload
+                        </button>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file"
+                               aria-describedby="inputGroupFileAddon">
+                        <label class="custom-file-label" for="file" style="overflow: hidden;">Выберите
+                            файл</label>
+                    </div>
+                </div>
+                <br>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                aria-expanded="false" for="inputGroupSelect">Choose output format
+                        </button>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect">
+                        {% for format in available_formats %}
+                        <option>{{ format }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                <button type="button" class="btn btn-success w-100" id="submit-file">Convert
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+</body>
+</html>
