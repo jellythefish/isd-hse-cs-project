@@ -1,7 +1,5 @@
 import chardet
 import os
-import sys
-import subprocess
 
 def detect_encoding(file_path):
     with open(file_path, 'rb') as fh:

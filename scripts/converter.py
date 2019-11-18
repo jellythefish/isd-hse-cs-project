@@ -15,8 +15,8 @@ def convert_encoding(root_path, initial_encoding, final_encoding):
     input_file_path = str(Path(f"{root_path}/target-files/input.txt"))
     output_sym = " > "
     output_file_path = str(Path(f"{root_path}/target-files/{final_encoding}-converted.txt"))
-    cmd = iconv + encodings_string + input_file_path + output_sym + output_file_path
-    
+    cmd = f"\"{iconv}\" {encodings_string} \"{input_file_path}\" {output_sym} \"{output_file_path}\""
+
     try:
         subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     except subprocess.CalledProcessError:

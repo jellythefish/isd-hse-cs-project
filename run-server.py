@@ -25,6 +25,7 @@ def upload_file(output_type=None):
     try:
         convert_encoding(root_path, initial_file_encoding, output_type)
     except Exception as e:
+        print(f"Error: {str(e.output)}")
         return Response("HTTP_400_BAD_REQUEST: " + str(e.output), 400)
 
     output_file_path = str(Path(f"target-files/{output_type}-converted.txt"))
