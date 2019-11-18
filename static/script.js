@@ -4,7 +4,7 @@ $('#file').on('change', function () {
 })
 
 $('#btn-file').on('click', function () {
-   $('#file').click();
+    $('#file').click();
 })
 
 $('#submit-file').on('click', function () {
@@ -25,23 +25,28 @@ $('#submit-file').on('click', function () {
         fetch('/convert/' + $('#inputGroupSelect :selected').text(), {
             method: 'POST',
             body: formData
-        })
-            .then(resp => resp.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = $('#file').val().replace(/C:\\fakepath\\/i, '');
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                responseLabel.text("Success!");
-                responseLabel.addClass('alert-success');
-            })
-            .catch(() => {
+        }).then(resp => {
+            if (resp.status === 200) {
+                return resp.blob()
+            } else {
                 responseLabel.text("Bad request!");
                 responseLabel.addClass('alert-warning');
-            });
+            }
+        }).then(blob => {
+            if (blob == undefined) {
+                return;
+            }
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = $('#file').val().replace(/C:\\fakepath\\/i, '');
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            responseLabel.text("Success!");
+            responseLabel.addClass('alert-success');
+        });
     }
 })
