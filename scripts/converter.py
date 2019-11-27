@@ -16,8 +16,7 @@ def get_available_formats(root_path):
     if os == "Windows":
         return subprocess.check_output([get_iconv_name(root_path), "-l"], text=True).split()
     else:
-        return subprocess.check_output([get_iconv_name(root_path), "--list"], text=True).split(
-            "//\n")
+        return subprocess.check_output([get_iconv_name(root_path), "--list"], text=True).split()
 
 
 def convert_encoding(root_path, initial_encoding, final_encoding):
